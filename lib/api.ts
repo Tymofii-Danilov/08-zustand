@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note } from "../types/note";
+import type { CreateNote, Note } from "../types/note";
 
 const key = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
@@ -36,17 +36,11 @@ export async function fetchNotes({
   return response.data;
 }
 
-interface CreateNoteProps {
-  title: string;
-  content: string;
-  tag: string;
-}
-
 export async function createNote({
   title,
   content,
   tag,
-}: CreateNoteProps): Promise<Note> {
+}: CreateNote): Promise<Note> {
   const response = await axios.post<Note>(`/notes`, { title, content, tag });
   return response.data;
 }

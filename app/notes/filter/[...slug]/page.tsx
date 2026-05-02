@@ -5,9 +5,34 @@ import {
   dehydrate,
   QueryClient,
 } from "@tanstack/react-query";
+import { Metadata } from "next";
 
 interface NotesProps {
   params: Promise<{ slug: string[] }>;
+}
+
+export async function generateMetadata({
+  params,
+}: NotesProps): Promise<Metadata> {
+  const { slug } = await params;
+  const category = slug[0];
+  return {
+    title: `NoteHub - ${category} notes`,
+    description: `View all of your ${category} notes on Notehub - fast and easy`,
+    openGraph: {
+      title: `NoteHub - ${category} notes`,
+      description: `View all of your ${category} notes on Notehub - fast and easy`,
+      url: "notehub.com/notes/filter/all",
+      images: [
+        {
+          url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+          width: 1200,
+          height: 630,
+          alt: category,
+        },
+      ],
+    },
+  };
 }
 
 export default async function Notes({ params }: NotesProps) {
