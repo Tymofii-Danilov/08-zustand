@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import { useDebouncedCallback } from "use-debounce";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Link from "next/link";
 
 export default function NotesClient({ tag }: { tag: string }) {
@@ -25,13 +25,10 @@ export default function NotesClient({ tag }: { tag: string }) {
 
   const totalPages = data?.totalPages ?? 0;
 
-  const findTasks = useDebouncedCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setQuery(event.target.value);
-      setPage(1);
-    },
-    500,
-  );
+  const findTasks = useDebouncedCallback((value: string) => {
+    setQuery(value);
+    setPage(1);
+  }, 500);
 
   useEffect(() => {
     if (isSuccess && data.notes.length === 0) {
@@ -41,12 +38,9 @@ export default function NotesClient({ tag }: { tag: string }) {
 
   return (
     <>
-      <div>
-        <Toaster position="top-center" reverseOrder={false} />
-      </div>
       <div className={css.app}>
         <div className={css.toolbar}>
-          <SearchBox findTasks={findTasks} />
+          <SearchBox onSearch={findTasks} />
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}
