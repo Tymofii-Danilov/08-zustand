@@ -19,7 +19,7 @@ export default function NotesClient({ tag }: { tag: string }) {
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["notes", page, query, category],
     queryFn: () => fetchNotes({ query, page, perPage: 8, tag: category }),
-    refetchOnMount: false,
+    staleTime: 60 * 1000,
     placeholderData: keepPreviousData,
   });
 
